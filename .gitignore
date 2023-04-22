@@ -1,4 +1,12 @@
 __pycache__
 
+*.pkl
+*.pickle
+*.csv
+*.mp4
+*.gif
+
+stdout.log
+
 build
 pytorchvideo

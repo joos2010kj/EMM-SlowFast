@@ -5,9 +5,11 @@
 
 import argparse
 import sys
+from pathlib import Path
 
 import slowfast.utils.checkpoint as cu
 from slowfast.config.defaults import get_cfg
+from slowfast.config import custom_config
 
 
 def parse_args():
@@ -79,6 +81,17 @@ def load_config(args, path_to_config=None):
     # Load config from command line, overwrite config from opts.
     if args.opts is not None:
         cfg.merge_from_list(args.opts)
+    custom_config.add_custom_config(cfg)
+
+    assert Path(args.cfg_files[0]).stem == \
+            Path(cfg.TRAIN.CHECKPOINT_FILE_PATH).stem == \
+            Path(cfg.TEST.CHECKPOINT_FILE_PATH).stem
+    
+    if cfg.DEMO.ENABLE:
+        if "kinetics" in cfg.DEMO.LABEL_FILE_PATH:
+            assert "kinetics" == cfg.TRAIN.DATASET.lower()
+        elif "ava" in cfg.DEMO.LABEL_FILE_PATH:
+            assert "ava" == cfg.TRAIN.DATASET.lower()
 
     # Inherit parameters from args.
     if hasattr(args, "num_shards") and hasattr(args, "shard_id"):
