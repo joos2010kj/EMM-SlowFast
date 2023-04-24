@@ -7,15 +7,15 @@ PUPILLAB_SAMPLE = "/home/kevin/repo/EngageMMent/data/2023-04-05_16-22-53-56aaa2a
 
 
 def add_custom_config(_C):
-    dataset = ["kinetics", "ava"][0]
+    dataset = ["kinetics", "ava"][1]    # ava or kinetics?
     mode = ["demo", "train", "test"][0]
-    _C.NUM_GPUS = 8
+    _C.NUM_GPUS = [1, 2, 4, 8][2]
 
     """
     applicable to demo only
     """
-    input_video = "video_list/clapping.mp4"
-    output_file = "temp.mp4"
+    input_video = "video_list/ava_demo_clone.mp4" # input video?
+    output_file = "temp.mp4"    # output location?
     localize_and_label_actions = True
 
     """
@@ -38,7 +38,7 @@ def add_custom_config(_C):
     _C.TEST.CHECKPOINT_TYPE = framework
     _C.DEMO.LABEL_FILE_PATH = {
         "kinetics": "labels/kinetics-400-demo-labels.json",
-        "ava": "labels/ava-labels.json"
+        "ava": "labels/ava-labels-ind-0.json"
     }[dataset]
 
     if mode == "demo":
